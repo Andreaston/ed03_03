@@ -30,21 +30,24 @@ public class Main {
     // Calcula el total de una compra en base a los productos y cantidades
     public static double calcularTotalCompra(List<String> productos, List<Double> precios, int[] cantidades) {
         double subtotal = calcularSubtotal(productos, precios, cantidades);
-        double descuento = aplicarDescuento(subtotal); // Error en descuento
-        double totalConDescuento = subtotal - descuento;
+        double descuento = aplicarDescuento(subtotal);
+        //double totalConDescuento = subtotal - descuento;
 
-        // Error lógico: no se aplica correctamente la función calcularImpuestos
-        double totalConImpuestos = calcularImpuestos(totalConDescuento);
+        // Eliminanos el calculo totalConDescuento poruqe ya calculamos eso en la función anterior así que no nos hace ya falta
+        double totalConImpuestos = calcularImpuestos(descuento);
         return totalConImpuestos;
     }
 
     // Calcula el subtotal de la compra
+    // El array daba una vuelta más por lo que hacia que no coincidiese con nada en la lista, rompiendo el código.
+        //Para solucionarlo tendenemos que hacer que recorra una vuelta de menos
     public static double calcularSubtotal(List<String> productos, List<Double> precios, int[] cantidades) {
         double subtotal = 0;
-        for (int i = 0; i <= productos.size(); i++) {
-            // Error de control: verificar si la cantidad es mayor que cero
-            subtotal += precios.get(i) * cantidades[i];
-        }
+        for (int i = 0; i <= productos.size() - 1; i++) {
+
+             subtotal += precios.get(i) * cantidades[i];
+
+       }
         System.out.println("Subtotal: $" + subtotal);
         return subtotal;
     }
@@ -54,10 +57,22 @@ public class Main {
     // Aplica un 10% para compras entre 500 y 1000 euros
     // No aplica ningún descuento si la compra es de menos de 500 euros
     public static double aplicarDescuento(double subtotal) {
+
+        //Asignamos el subtotal a una variable auxiliar
+        Double calculoDescuento = subtotal;
+
         if (subtotal > 1000) {
-            return subtotal * 0.15; // Descuento del 15%
+            //Guardamos el resultado de la operación en la variable auxiliar
+            calculoDescuento = subtotal * 0.15;
+            //Completamos la operación para realizar el descuento
+            subtotal = subtotal - calculoDescuento;
+            return subtotal; // Descuento del 15%
         } else if (subtotal > 500) {
-            return subtotal * 0.10; // Descuento del 10%
+            //Guardamos el resultado de la operación en la variable auxiliar
+            calculoDescuento = subtotal * 0.10;
+            //Completamos la operación para realizar el descuento
+            subtotal = subtotal - calculoDescuento;
+            return subtotal; // Descuento del 10%
         }
         // Error: sin descuento
         return 0.0;
@@ -66,7 +81,8 @@ public class Main {
     // Calcula los impuestos aplicados al total con descuento
     public static double calcularImpuestos(double total) {
         final double IMPUESTO = 0.21; // Impuesto del 21%
-        // Error lógico: no se aplica correctamente el cálculo
-        return total * IMPUESTO; // Debe devolver total + impuestos
+        //Ponemos una variable auxiliar para el cálculo
+        double calculoImpuestos = total * IMPUESTO;
+        return total = total + calculoImpuestos; // Debe devolver total + impuestos
     }
 }
